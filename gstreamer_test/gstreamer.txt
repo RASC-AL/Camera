@@ -22,3 +22,4 @@ gst-launch-0.10 -evt souphttpsrc location='http://127.0.0.1:8080/stream?topic=/c
 
 Recieve:
 gst-launch udpsrc port=1234 ! "application/x-rtp, payload=127" ! rtph264depay ! ffdec_h264 ! xvimagesink sync=false
+gst-launch udpsrc port=1234 ! "application/x-rtp, payload=96" ! rtph264depay ! ffdec_h264 !  ffmpegcolorspace ! autovideosink sync=false
