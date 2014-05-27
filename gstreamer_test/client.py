@@ -6,7 +6,7 @@ import rospy
 import cv
 
 TCP_IP = 'localhost'
-TCP_PORT = 5003
+TCP_PORT = 30000
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

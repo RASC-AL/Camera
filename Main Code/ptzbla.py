@@ -165,7 +165,12 @@ def talker():
         #a=image.shape
         #print a
         #rospy.loginfo(st)
-        print type(frame)
+	###################################UDP################################
+	#small = cvCreateImage(cvSize(frame.width / 2, frame.height / 2), frame.depth, 3);
+	#cv.resize(frame,small, cv.CV_INTER_LINEAR)
+	
+	#####################################################################
+        #print type(frame)
         pub.publish(bridge.cv_to_imgmsg(frame, "bgr8"))
         time1=time.time()
         #print "after frame publish: "+str(time1)
