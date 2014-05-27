@@ -2,36 +2,36 @@ import cv2
 import numpy as np
 import cv
 
-cv.NamedWindow("w1",cv.CV_WINDOW_AUTOSIZE)
-capture = cv.CaptureFromCAM(0)
-#image=cv2.imread('/home/niranjan/Desktop/Rock-Colors.JPG')
+#cv.NamedWindow("w1",cv.CV_WINDOW_AUTOSIZE)
+#capture = cv.CaptureFromCAM(0)
+image=cv2.imread('/home/niranjan/Desktop/Rock-Colors.JPG')
 #img=np.asaray(image[:,:])
-while(1):
-    image=cv.QueryFrame(capture)
-    cv.ShowImage("w1",image)
+#while(1):
+    #image=cv.QueryFrame(capture)
+    #cv.ShowImage("w1",image)
 
-    '''image=np.asarray(image[:,:])
+image=np.asarray(image[:,:])
     
 
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    lower_green = np.array([50,150,0])
-    upper_green = np.array([150,255,255])
-    lower_blue = np.array([80,50,120])
-    upper_blue = np.array([160,255,255])
-    lower_red=np.array([0,160,100])
-    upper_red=np.array([30,255,255])
+hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+lower_green = np.array([50,150,0])
+upper_green = np.array([150,255,255])
+lower_blue = np.array([80,50,120])
+upper_blue = np.array([160,255,255])
+lower_red=np.array([0,160,100])
+upper_red=np.array([30,255,255])
 
 
-    mask = cv2.inRange(hsv, lower_green, upper_green)
-    mask2 = cv2.inRange(hsv, lower_blue, upper_blue)
-    mask3 = cv2.inRange(hsv, lower_red, upper_red)
-    res = cv2.bitwise_and(image,image, mask= mask)
-    res2 = cv2.bitwise_and(image,image, mask= mask2)
-    res3 = cv2.bitwise_and(image,image, mask= mask3)
-    final=res+res2+res3'''
-    #cv2.imshow('My Image',image)
-   # cv2.imshow('Original',final)
-    #print final
+mask = cv2.inRange(hsv, lower_green, upper_green)
+mask2 = cv2.inRange(hsv, lower_blue, upper_blue)
+mask3 = cv2.inRange(hsv, lower_red, upper_red)
+res = cv2.bitwise_and(image,image, mask= mask)
+res2 = cv2.bitwise_and(image,image, mask= mask2)
+res3 = cv2.bitwise_and(image,image, mask= mask3)
+final=res+res2+res3
+cv2.imshow('My Image',image)
+cv2.imshow('Original',final)
+    #pint final
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
 

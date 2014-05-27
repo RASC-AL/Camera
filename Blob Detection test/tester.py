@@ -12,7 +12,7 @@ from cv_bridge import CvBridge, CvBridgeError
 import time
 
 
-capture=cv.CaptureFromCAM(0)
+capture=cv.CaptureFromCAM(1)
 
 def talker():
     global capture
@@ -21,9 +21,11 @@ def talker():
     rospy.init_node('talker', anonymous=True)
     while not rospy.is_shutdown():
         frame=cv.QueryFrame(capture)
+        #image=cv2.imread('/home/niranjan/Desktop/Rock-Colors.JPG')
+
         image=frame;
         image=np.asarray(image[:,:])
-        medianB=np.median(image[:,:,0]);
+        '''medianB=np.median(image[:,:,0]);
         medianG=np.median(image[:,:,1]);
         medianR=np.median(image[:,:,2]);
         #print median
@@ -34,17 +36,17 @@ def talker():
         image[:,:,1]=image[:,:,1]+diffG
         image[:,:,2]=image[:,:,2]+diffR
         image[image>=255]=254
-        image[image<=0]=1
+        image[image<=0]=1'''
         #print maxi
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         
-        lower_green = np.array([50,150,0])
-        upper_green = np.array([150,255,255])
-        lower_blue = np.array([80,50,0])
-        upper_blue = np.array([160,255,255])
+        lower_blue = np.array([80,80,0])
+        upper_blue = np.array([130,255,255])
+        lower_green = np.array([50,80,0])
+        upper_green = np.array([79,255,255])
         lower_red=np.array([0,160,0])
-        upper_red=np.array([30,255,255])
-        
+        upper_red=np.array([40,255,255])
+
         mask = cv2.inRange(hsv, lower_green, upper_green)
         mask2 = cv2.inRange(hsv, lower_blue, upper_blue)
         mask3 = cv2.inRange(hsv, lower_red, upper_red)
@@ -58,17 +60,54 @@ def talker():
                 if(temp<=255 and temp>=0):
                     image[i,j]=temp
         '''
+
     
         
-        maxi=np.min(image)
+        #maxi=np.min(image)
         res = cv2.bitwise_and(image,image, mask= mask)
+        im1=cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
+        contours1, hierarchy1 = cv2.findContours(im1,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours1:
+            x1,y1,w1,h1 = cv2.boundingRect(i)
+            cv2.rectangle(image,(x1,y1),(x1+w1,y1+h1),(0,255,0),2)
         res2 = cv2.bitwise_and(image,image, mask= mask2)
+        im2=cv2.cvtColor(res2,cv2.COLOR_BGR2GRAY)
+        contours2, hierarchy2 = cv2.findContours(im2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours2:
+            x2,y2,w2,h2 = cv2.boundingRect(i)
+            cv2.rectangle(image,(x2,y2),(x2+w2,y2+h2),(255,0,0),2)
         res3 = cv2.bitwise_and(image,image, mask= mask3)
-        final=res+res2+res3
-        frame=cv.fromarray(final)
-        #frame=final
+        im3=cv2.cvtColor(res3,cv2.COLOR_BGR2GRAY)
+        contours3, hierarchy3 = cv2.findContours(im3,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours3:
+            x3,y3,w3,h3 = cv2.boundingRect(i)
+            cv2.rectangle(image,(x3,y3),(x3+w3,y3+h3),(0,0,255),2)
+	#mask8 = cv2.cvtColor(mask, cv2.COLOR_HSV2BGR)
+	#image[mask==0]=0
+        #final=res+res3+res2
+        #final=res+res2
+	final=image
+        #frame1=cv.fromarray(final)
+        frame1=final
+        #im2=cv2.cvtColor(frame1,cv2.COLOR_BGR2GRAY)
+        #im3=cv2.cvtColor(im2,cv2.COLOR_GRAY2BGR)
+        #ret,thresh=cv2.threshold(im2,127,255,0)
         
-        pub.publish(bridge.cv_to_imgmsg(frame, "bgr8"))
+        #contours, hierarchy = cv2.findContours(im2,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        #for i in contours:
+            #x,y,w,h = cv2.boundingRect(i)
+            #cv2.rectangle(frame1,(x,y),(x+w,y+h),(0,255,0),2)
+        #frame1=im3
+        frame1=cv.fromarray(frame1)
+        #cv2.imshow('Features', im)       
+        #frame=fin
+	#res = cv2.bitwise_and(image,image, mask= mask3)
+	#mask3=cv2.cvtColor(mask3,cv2.COLOR_GRAY2RGB)
+	#frame=cv.fromarray(mask3)
+        
+	
+        
+        pub.publish(bridge.cv_to_imgmsg(frame1, "bgr8"))
 
 
 if __name__ == '__main__':
