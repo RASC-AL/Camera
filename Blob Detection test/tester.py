@@ -12,19 +12,31 @@ from cv_bridge import CvBridge, CvBridgeError
 import time
 
 
-capture=cv.CaptureFromCAM(1)
+#capture=cv.CaptureFromCAM(1)
 
 def talker():
     global capture
     bridge=CvBridge()
-    pub = rospy.Publisher('blobs', Image)
+    pub = rospy.Publisher('chatter', Image)
     rospy.init_node('talker', anonymous=True)
     while not rospy.is_shutdown():
+        capture=cv.CaptureFromCAM(1)
+        
         frame=cv.QueryFrame(capture)
         #image=cv2.imread('/home/niranjan/Desktop/Rock-Colors.JPG')
+        capture=cv.CaptureFromCAM(2)
+        
+        frame1=cv.QueryFrame(capture)
 
         image=frame;
         image=np.asarray(image[:,:])
+        image1=frame1;
+        image1=np.asarray(image1[:,:])
+        both=np.hstack((img,img1))
+        bitmap = cv.CreateImageHeader((both.shape[1], both.shape[0]), cv.IPL_DEPTH_8U, 3)
+        cv.SetData(bitmap, both.tostring(), both.dtype.itemsize * 3 * both.shape[1])
+        frame=bitmap
+        image=frame
         '''medianB=np.median(image[:,:,0]);
         medianG=np.median(image[:,:,1]);
         medianR=np.median(image[:,:,2]);
