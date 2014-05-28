@@ -17,7 +17,7 @@ capture=cv.CaptureFromCAM(1)
 def talker():
     global capture
     bridge=CvBridge()
-    pub = rospy.Publisher('chatter', Image)
+    pub = rospy.Publisher('blobs', Image)
     rospy.init_node('talker', anonymous=True)
     while not rospy.is_shutdown():
         frame=cv.QueryFrame(capture)
