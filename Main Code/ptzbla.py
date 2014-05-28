@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import roslib
-roslib.load_manifest('usb_cam_test')
+roslib.load_manifest('cam_test')
 import sys
 import rospy
 import cv
@@ -12,7 +12,11 @@ from sensor_msgs.msg import CompressedImage
 from cv_bridge import CvBridge, CvBridgeError
 import time
 
-
+cam_no=[]
+cam_no[0]=0
+cam_no[1]=1
+cam_no[2]=2
+cam_no[3]=3
 height=str(640)
 width=str(480)
 fps=str(30)
@@ -31,12 +35,21 @@ def callback1(ros_data):
     global sub
     global frame
     global cam
-    if cam==str(2):
+    if cam==str(4):
         print "here"
         np_arr = np.fromstring(ros_data.data, np.uint8)
         image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         frame=cv.fromarray(image_np)
         #sub.unregister()
+
+def cam_setup(setup_data):
+    global cam_no
+    string=str(setup_data.data)
+    b=string.split(',')
+    cam_no[0]=int(b[0])
+    cam_no[1]=int(b[1])
+    cam_no[2]=int(b[2])
+    cam_no[3]=int(b[3])
     
 def callback(data):
     print "data: " + data.data
@@ -56,7 +69,7 @@ def callback(data):
     cam=str(b[0])
     
     fps=str(b[1])
-    if prev_cam==str(2):
+    if prev_cam==str(4):
         #pass
         sub.unregister()
     if cam==str(0):
@@ -69,28 +82,28 @@ def callback(data):
         capture1=None
         capture=cv.CaptureFromCAM(1)
         #sub.unregister()
-    '''if cam==str(2):
+    if cam==str(2):
         capture=None
         capture1=None
         capture=cv.CaptureFromCAM(2)
-        sub.unregister()'''
+        #sub.unregister()
     if cam==str(3):
         capture=None
         capture1=None
         capture=cv.CaptureFromCAM(3)
         #sub.unregister()
-    if cam==str(2):
+    if cam==str(4):
         capture=None
         capture1=None
         sub=rospy.Subscriber('/image_raw/compressed', CompressedImage,callback1,queue_size=1)
         check_fps_set=1
         return
-    if cam==str(4):
+    if cam==str(5):
         capture=None
         capture1=None
         #sub.unregister()
-        capture=cv.CaptureFromCAM(0)
-        capture1=cv.CaptureFromCAM(1)
+        capture=cv.CaptureFromCAM(cam_no[0])
+        capture1=cv.CaptureFromCAM(cam_no[1])
         check_fps_set=1
         return
     check_fps_set=1
@@ -120,6 +133,7 @@ def talker():
     rospy.init_node('talker', anonymous=True)
     
     rospy.Subscriber("config", String, callback)
+    rospy.Subscriber("configCam", String, cam_setup)
     #rospy.Subscriber('/image_raw/compressed', CompressedImage, callback1,queue_size=1)
     r = rospy.Rate(int(fps))
     time1=0
@@ -128,15 +142,15 @@ def talker():
     check=0
     cv.QueryFrame(capture)
     frame=cv.QueryFrame(capture)
-    if cam==str(2):
+    if cam==str(4):
         sub=rospy.Subscriber('/image_raw/compressed', CompressedImage,callback1,queue_size=1)
     while not rospy.is_shutdown():
         #str = "hello world %s"%rospy.get_time()
-        if cam!=str(2):
+        if cam!=str(4):
             frame=cv.QueryFrame(capture)
-        time1=time.time()
+        #time1=time.time()
         #print "after frame capture: "+str(time1)
-        if cam==str(4):
+        if cam==str(5):
             frame=cv.QueryFrame(capture)
             frame1=cv.QueryFrame(capture1)
             img=np.asarray(frame[:,:])
@@ -172,10 +186,10 @@ def talker():
 	#####################################################################
         #print type(frame)
         pub.publish(bridge.cv_to_imgmsg(frame, "bgr8"))
-        time1=time.time()
+        #time1=time.time()
         #print "after frame publish: "+str(time1)
         r.sleep()
-        time1=time.time()
+        #time1=time.time()
         #print "after sleep: "+str(time1)
 
 if __name__ == '__main__':
