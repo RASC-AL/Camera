@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import roslib
-roslib.load_manifest('cam_test')
+roslib.load_manifest('usb_cam_test')
 import sys
 import rospy
 import cv
@@ -13,15 +13,15 @@ from cv_bridge import CvBridge, CvBridgeError
 import time
 
 cam_no=[]
-cam_no[0]=0
-cam_no[1]=1
-cam_no[2]=2
-cam_no[3]=3
+cam_no.append(0)
+cam_no.append(4)
+cam_no.append(2)
+cam_no.append(3)
 height=str(640)
 width=str(480)
 fps=str(30)
 cam="0"
-capture=cv.CaptureFromCAM(0)
+capture=cv.CaptureFromCAM(cam_no[0])
 capture1=None
 sub=None
 frame=None
@@ -45,6 +45,7 @@ def callback1(ros_data):
 def cam_setup(setup_data):
     global cam_no
     string=str(setup_data.data)
+    print "Config cam string: " + string
     b=string.split(',')
     cam_no[0]=int(b[0])
     cam_no[1]=int(b[1])
@@ -61,6 +62,7 @@ def callback(data):
     global cam
     global check_fps_set
     global sub
+    global cam_no
     string=str(data.data)
     b=string.split(',')
     height=str(b[2])
@@ -75,22 +77,22 @@ def callback(data):
     if cam==str(0):
         capture=None
         capture1=None
-        capture=cv.CaptureFromCAM(0)
+        capture=cv.CaptureFromCAM(cam_no[0])
         #sub.unregister()
     if cam==str(1):
         capture=None
         capture1=None
-        capture=cv.CaptureFromCAM(1)
+        capture=cv.CaptureFromCAM(cam_no[1])
         #sub.unregister()
     if cam==str(2):
         capture=None
         capture1=None
-        capture=cv.CaptureFromCAM(2)
+        capture=cv.CaptureFromCAM(cam_no[2])
         #sub.unregister()
     if cam==str(3):
         capture=None
         capture1=None
-        capture=cv.CaptureFromCAM(3)
+        capture=cv.CaptureFromCAM(cam_no[3])
         #sub.unregister()
     if cam==str(4):
         capture=None
