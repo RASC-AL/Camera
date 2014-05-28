@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import roslib
-roslib.load_manifest('usb_cam_test')
+roslib.load_manifest('cam_test')
 import sys
 import rospy
 import cv
@@ -187,6 +187,11 @@ def talker():
 	
 	#####################################################################
         #print type(frame)
+        if frame==None:
+            frame = np.zeros((480,640,3), np.uint8)
+            bitmap = cv.CreateImageHeader((frame.shape[1], frame.shape[0]), cv.IPL_DEPTH_8U, 3)
+            cv.SetData(bitmap, frame.tostring(), frame.dtype.itemsize * 3 * frame.shape[1])
+            frame=bitmap
         pub.publish(bridge.cv_to_imgmsg(frame, "bgr8"))
         #time1=time.time()
         #print "after frame publish: "+str(time1)
