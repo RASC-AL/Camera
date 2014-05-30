@@ -51,3 +51,22 @@ Pan: 0 to 359
 Tilt: (0 to -180) or (360 to 180)
 Zoom: 0 to 10000
 
+
+
+
+Automatically login in text mode without specifying userid or password:
+
+Add -a <your-user-name> to the line:
+
+exec /sbin/getty -8 38400 tty1
+
+in file /etc/init/tty1.conf
+
+like so:
+
+exec /sbin/getty -8 38400 tty6 -a gruber
+
+
+Launch script on startup:
+Add bash commands to the .bash_login file in home directory.
+
