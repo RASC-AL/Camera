@@ -11,17 +11,39 @@ from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
 from cv_bridge import CvBridge, CvBridgeError
 import time
+import os
+from subprocess import call
+import re
+
+stream=os.popen("ls /dev/video*")
+a= stream.read()
+#print a[1]
+
+b= a.split('\n')
+#arlen=len(b)
+i=0
+List=[]
+for device in b:
+	x=re.findall(r'\d+',device)
+	List=List+x
+
+print "Available Video Devices:\n"
+
+print List
+
+
 
 cam_no=[]
-cam_no.append(0)
-cam_no.append(4)
-cam_no.append(2)
-cam_no.append(3)
+cam_no.append(int(List[0]))
+cam_no.append(int(List[1]))
+cam_no.append(int(List[2]))
+cam_no.append(int(List[3]))
 height=str(640)
 width=str(480)
 fps=str(30)
 cam="0"
-capture=cv.CaptureFromCAM(cam_no[0])
+#capture=cv.CaptureFromCAM(int(List[0]))
+capture=cv.CaptureFromCAM(1)
 capture1=None
 sub=None
 frame=None
@@ -36,7 +58,7 @@ def callback1(ros_data):
     global frame
     global cam
     if cam==str(4):
-        print "here"
+        #print "here"
         np_arr = np.fromstring(ros_data.data, np.uint8)
         image_np = cv2.imdecode(np_arr, cv2.CV_LOAD_IMAGE_COLOR)
         frame=cv.fromarray(image_np)
@@ -47,10 +69,14 @@ def cam_setup(setup_data):
     string=str(setup_data.data)
     print "Config cam string: " + string
     b=string.split(',')
-    cam_no[0]=int(b[0])
-    cam_no[1]=int(b[1])
-    cam_no[2]=int(b[2])
-    cam_no[3]=int(b[3])
+    '''cam_no[0]=int(b[int(List[0])])
+    cam_no[1]=int(b[int(List[1])])
+    cam_no[2]=int(b[int(List[2])])
+    cam_no[3]=int(b[int(List[3])])'''
+    cam_no[0]=int(List[int(b[0])])
+    cam_no[1]=int(List[int(b[1])])
+    cam_no[2]=int(List[int(b[2])])
+    cam_no[3]=int(List[int(b[3])])
     
 def callback(data):
     print "data: " + data.data
