@@ -17,9 +17,15 @@ gst-launch-0.10 -evt souphttpsrc location='http://127.0.0.1:8080/stream?topic=/c
 
 gst-launch-0.10 -evt souphttpsrc location='http://127.0.0.1:8080/stream?topic=/chatter' is_live=true timeout=5 ! multipartdemux ! image/jpeg ! ffdec_mjpeg ! ffenc_mpeg4 ! rtpmp4vpay send-config=true ! udpsink host=127.0.0.1 port=1234
 
+gst-launch-0.10 -evt souphttpsrc location='http://127.0.0.1:8080/stream?topic=/chatter' is_live=true timeout=5 ! multipartdemux ! image/jpeg ! ffdec_mjpeg ! ffenc_mpeg4 ! rtpmp4vpay send-config=true ! udpsink host=128.205.54.9 port=5632
+
+
 128.205.54.6
 
 
 Recieve:
 gst-launch udpsrc port=1234 ! "application/x-rtp, payload=127" ! rtph264depay ! ffdec_h264 ! xvimagesink sync=false
+
 gst-launch udpsrc port=1234 ! "application/x-rtp, payload=96" ! rtph264depay ! ffdec_h264 !  ffmpegcolorspace ! autovideosink sync=false
+
+gst-launch-0.10 udpsrc port=1234 ! "application/x-rtp, payload=96, media=video, clock-rate=90000, encoding-name=MP4V-ES" ! rtpmp4vdepay ! ffdec_mpeg4 !  ffmpegcolorspace ! xvimagesink sync=false
