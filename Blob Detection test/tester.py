@@ -113,22 +113,53 @@ def talker():
         #print maxi
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         hsv1 = cv2.cvtColor(image1, cv2.COLOR_BGR2HSV)
-
+        '''
         lower_blue = np.array([80,80,0])
         upper_blue = np.array([130,255,255])
         lower_green = np.array([50,80,0])
         upper_green = np.array([79,255,255])
         lower_red=np.array([0,160,0])
         upper_red=np.array([40,255,255])
+        ''''
+
+        lower_blue = np.array([80,100,60])
+        upper_blue = np.array([120,255,255])
+        lower_green = np.array([50,90,0])
+        upper_green = np.array([75,255,255])
+        lower_red=np.array([170,160,60])
+        upper_red=np.array([180,255,255])
+        lower_orange=np.array([0,160,40])
+        upper_orange=np.array([17,255,255])
+        lower_yellow=np.array([23,160,60])
+        upper_yellow=np.array([35,255,255])
+        lower_violet=np.array([135,160,60])
+        upper_violet=np.array([155,255,255])
+
+        '''
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         mask2 = cv2.inRange(hsv, lower_blue, upper_blue)
         mask3 = cv2.inRange(hsv, lower_red, upper_red)
 
-
+        '''
+        mask = cv2.inRange(hsv, lower_green, upper_green)
+        mask2 = cv2.inRange(hsv, lower_blue, upper_blue)
+        mask3 = cv2.inRange(hsv, lower_red, upper_red)
+        mask4 = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        mask5 = cv2.inRange(hsv, lower_orange, upper_orange)
+        mask6 = cv2.inRange(hsv, lower_violet, upper_violet)
+        '''
         mask4 = cv2.inRange(hsv1, lower_green, upper_green)
         mask5 = cv2.inRange(hsv1, lower_blue, upper_blue)
         mask6 = cv2.inRange(hsv1, lower_red, upper_red)
+        '''
+
+        mask7 = cv2.inRange(hsv1, lower_green, upper_green)
+        mask8 = cv2.inRange(hsv1, lower_blue, upper_blue)
+        mask9 = cv2.inRange(hsv1, lower_red, upper_red)
+        mask10 = cv2.inRange(hsv1, lower_yellow, upper_yellow)
+        mask11 = cv2.inRange(hsv1, lower_orange, upper_orange)
+        mask12 = cv2.inRange(hsv1, lower_violet, upper_violet)
         #a=image.shape
         #print a
         '''for i in range(1,a[1]):
@@ -161,27 +192,66 @@ def talker():
         for i in contours3:
             x3,y3,w3,h3 = cv2.boundingRect(i)
             cv2.rectangle(image,(x3,y3),(x3+w3,y3+h3),(0,0,255),2)
-        #################################################
-
-            
-        res4 = cv2.bitwise_and(image1,image1, mask= mask4)
+        res4 = cv2.bitwise_and(image,image, mask= mask4)
         im4=cv2.cvtColor(res4,cv2.COLOR_BGR2GRAY)
         contours4, hierarchy4 = cv2.findContours(im4,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
         for i in contours4:
             x4,y4,w4,h4 = cv2.boundingRect(i)
-            cv2.rectangle(image1,(x4,y4),(x4+w4,y4+h4),(0,255,0),2)
-        res5 = cv2.bitwise_and(image1,image1, mask= mask5)
+            cv2.rectangle(image,(x4,y4),(x4+w4,y4+h4),(0,255,255),2)
+        res5 = cv2.bitwise_and(image,image, mask= mask5)
         im5=cv2.cvtColor(res5,cv2.COLOR_BGR2GRAY)
         contours5, hierarchy5 = cv2.findContours(im5,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
         for i in contours5:
             x5,y5,w5,h5 = cv2.boundingRect(i)
-            cv2.rectangle(image1,(x5,y5),(x5+w5,y5+h5),(255,0,0),2)
-        res6 = cv2.bitwise_and(image1,image1, mask= mask6)
+            cv2.rectangle(image,(x5,y5),(x5+w5,y5+h5),(0,165,255),2)
+        res6 = cv2.bitwise_and(image,image, mask= mask6)
         im6=cv2.cvtColor(res6,cv2.COLOR_BGR2GRAY)
         contours6, hierarchy6 = cv2.findContours(im6,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
         for i in contours6:
             x6,y6,w6,h6 = cv2.boundingRect(i)
-            cv2.rectangle(image1,(x6,y6),(x6+w6,y6+h6),(0,0,255),2)
+            cv2.rectangle(image,(x6,y6),(x6+w6,y6+h6),(238,130,238),2)
+
+
+###############################################################################
+        res7 = cv2.bitwise_and(image1,image1, mask= mask)
+        im7=cv2.cvtColor(res7,cv2.COLOR_BGR2GRAY)
+        contours7, hierarchy7 = cv2.findContours(im7,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours7:
+            x7,y7,w7,h7 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x7,y7),(x7+w7,y7+h7),(0,255,0),2)
+        res8 = cv2.bitwise_and(image1,image1, mask= mask2)
+        im8=cv2.cvtColor(res8,cv2.COLOR_BGR2GRAY)
+        contours8, hierarchy8 = cv2.findContours(im8,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours8:
+            x8,y8,w8,h8 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x8,y8),(x8+w8,y8+h8),(255,0,0),2)
+        res9 = cv2.bitwise_and(image1,image1, mask= mask3)
+        im9=cv2.cvtColor(res9,cv2.COLOR_BGR2GRAY)
+        contours9, hierarchy9 = cv2.findContours(im9,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours9:
+            x9,y9,w9,h9 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x9,y9),(x9+w9,y9+h9),(0,0,255),2)
+        res10 = cv2.bitwise_and(image1,image1, mask= mask4)
+        im10=cv2.cvtColor(res4,cv2.COLOR_BGR2GRAY)
+        contours10, hierarchy10 = cv2.findContours(im10,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours10:
+            x10,y10,w10,h10 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x10,y10),(x10+w10,y10+h10),(0,255,255),2)
+        res11 = cv2.bitwise_and(image1,image1, mask= mask5)
+        im11=cv2.cvtColor(res11,cv2.COLOR_BGR2GRAY)
+        contours11, hierarchy11 = cv2.findContours(im11,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours11:
+            x11,y11,w11,h11 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x11,y11),(x11+w11,y11+h11),(0,165,255),2)
+        res12 = cv2.bitwise_and(image1,image1, mask= mask6)
+        im12=cv2.cvtColor(res12,cv2.COLOR_BGR2GRAY)
+        contours12, hierarchy12 = cv2.findContours(im12,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        for i in contours12:
+            x12,y12,w12,h12 = cv2.boundingRect(i)
+            cv2.rectangle(image1,(x12,y12),(x12+w12,y12+h12),(238,130,238),2)
+
+
+        
 
 
 	#mask8 = cv2.cvtColor(mask, cv2.COLOR_HSV2BGR)
