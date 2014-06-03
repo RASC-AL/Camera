@@ -28,4 +28,6 @@ gst-launch udpsrc port=1234 ! "application/x-rtp, payload=127" ! rtph264depay ! 
 
 gst-launch udpsrc port=1234 ! "application/x-rtp, payload=96" ! rtph264depay ! ffdec_h264 !  ffmpegcolorspace ! autovideosink sync=false
 
-gst-launch-0.10 udpsrc port=1234 ! "application/x-rtp, payload=96, media=video, clock-rate=90000, encoding-name=MP4V-ES" ! rtpmp4vdepay ! ffdec_mpeg4 !  ffmpegcolorspace ! xvimagesink sync=false
+gst-launch-0.10 udpsrc port=5632 ! "application/x-rtp, payload=96, media=video, clock-rate=90000, encoding-name=MP4V-ES" ! rtpmp4vdepay ! ffdec_mpeg4 !  ffmpegcolorspace ! xvimagesink sync=false
+
+gst-launch-0.10 udpsrc port=5632 ! "application/x-rtp, payload=96, media=video, clock-rate=90000, encoding-name=MP4V-ES" ! rtpmp4vdepay ! ffdec_mpeg4 ! ffmpegcolorspace ! videoscale ! video/x-raw-rgb, width=1030, height=768 ! autovideosink sync=false
