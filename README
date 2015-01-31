@@ -6,6 +6,8 @@ http://wiki.ros.org/hydro/Installation/Ubuntu
 OpenCV Installation:
 https://help.ubuntu.com/community/OpenCV
 
+Running everything except gstreamer:
+roslaunch usb_cam_test rover_launch.launch
 
 Running the camera node and server:
 
@@ -14,7 +16,7 @@ Running the camera node and server:
     rosrun roscore
 
 2. Run the camera node:
-    rosrun usb_cam_test publisher1.py
+    rosrun usb_cam_test pubcon.py
 
 3. Run the mjpeg server:
     rosrun mjpeg_server mjpeg_server
